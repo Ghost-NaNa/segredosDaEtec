@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import Itenssalvos from '../paginas/itensSalvos/salvos.js';
 import HomeScreen from '../paginas/home/home.js';
+import MeuPerfil from '../paginas/perfil/perfil.js';
 
 
 export default function Drawer() {
@@ -11,7 +11,7 @@ export default function Drawer() {
   return (
     <Drawer.Navigator >
       <Drawer.Screen options={{drawerActiveTintColor: 'purple'}} name="Depoimentos recentes" component={HomeScreen}/>
-      <Drawer.Screen name="Itens Salvos" component={Itenssalvos} />
+      <Drawer.Screen name="Perfil" component={MeuPerfil} />
     </Drawer.Navigator>
   );
 }

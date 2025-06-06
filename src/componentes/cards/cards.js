@@ -13,9 +13,10 @@ const Cards = ({
   comments = 0,
   onStarPress = () => {},
   onReportPress = () => {},
+  onCardPress = () => {}
 }) => {
   return (
-    <View style={estiloCard.card}>
+    <TouchableOpacity style={estiloCard.card} onPress={onCardPress}>
       <Avatar.Image size={48} source={{ uri: avatarUrl }} />
 
       <View style={estiloCard.content}>
@@ -43,7 +44,7 @@ const Cards = ({
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
