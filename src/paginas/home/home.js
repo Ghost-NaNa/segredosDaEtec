@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation } from "@react-navigation/core";
-import { SafeAreaView, FlatList, Platform, StyleSheet } from 'react-native';
-import Cards from '../../componentes/cards/cards.js'; // Importe seu componente Cards
-import pegarDepoimentos from '../../servicos/posts.js';
+import React, { useState, useEffect } from 'react'
+import { useNavigation } from "@react-navigation/core"
+import { SafeAreaView, FlatList, Platform, StyleSheet } from 'react-native'
+import Cards from '../../componentes/cards/cards.js'
+import { pegarDepoimentos } from '../../servicos/posts.js'
 
 export default function App() {
 
@@ -12,10 +12,10 @@ export default function App() {
 
     useEffect(() => {
         (async () => {
-            const dados = await pegarDepoimentos();
-            setDepoimentos(dados);
-        })();
-    }, []);
+            const dados = await pegarDepoimentos()
+            setDepoimentos(dados)
+        })()
+    }, [])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -31,7 +31,7 @@ export default function App() {
                         comments={0}
                         onStarPress={() => console.log('Star pressed', item.depoimento_id)}
                         onReportPress={() => console.log('Report pressed', item.depoimento_id)}
-                        onCardPress= { () => {console.log('Card pressed');} }
+                        onCardPress={() => { console.log('Card pressed'), navigation.navigate('Depoimento', { depoimentoId: item.depoimento_id }); }}
                     />
                 )}
             />
