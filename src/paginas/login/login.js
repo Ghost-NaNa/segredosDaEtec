@@ -14,7 +14,7 @@ export default function Login({ navigation }) {
         if (rm && senha.length > 4) {
             try {
                 const dados = { rm: parseInt(rm), senha: senha }
-                const url = 'http://localhost:3000/depoimentos-etec/v1/login'
+                const url = 'http://192.168.18.120:3000/depoimentos-etec/v1/login'
 
                 const response = await fetch(url, {
                     method: 'POST',

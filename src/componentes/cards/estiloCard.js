@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native"
 
 const estiloCard = StyleSheet.create({
     card: {
-        marginTop: 5,
+        marginTop: 2,
         flexDirection: 'row',
         padding: 12,
         borderBottomWidth: 0.5,

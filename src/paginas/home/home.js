@@ -21,7 +21,7 @@ export default function App() {
       carregarDepoimentos()
     }, [])
   )
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

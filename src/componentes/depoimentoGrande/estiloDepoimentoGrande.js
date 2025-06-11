@@ -1,43 +1,49 @@
-import { StyleSheet, Dimensions } from "react-native"
+import { StyleSheet, Dimensions } from "react-native";
 
-const { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window');
 
 const estiloDepoimentoGrande = StyleSheet.create({
   cardContainer: {
-    backgroundColor: '#fff',
-    margin: 16,
-    borderRadius: 12,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 3,
-    justifyContent: 'flex-start',
+    marginTop: 2,
+    flexDirection: 'column',
+    padding: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#ddd',
+    backgroundColor: 'white',
+    borderRadius: 8,
   },
 
-  titleContainer: {
-    marginBottom: 20,
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 4,  
   },
+
   title: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
-    textAlign: 'center',
+    textAlign: 'left',
   },
 
   textContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    marginBottom: 4,
+    padding: 8 
   },
+
   text: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#444',
-    textAlign: 'center',
     lineHeight: 22,
+    textAlign: 'left',
   },
-})
+
+  actionButton: {
+    flexDirection: 'row',
+    justifyContent: "flex-end",
+  },
+});
 
 export default estiloDepoimentoGrande;

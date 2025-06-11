@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native'
+import { Feather } from '@expo/vector-icons'
 import { publicarComentario, pegarSecaoDepoimento } from '../../servicos/posts'
 import CardGrande from '../../componentes/depoimentoGrande/depoimentoGrande'
 
@@ -50,37 +51,42 @@ export default function Depoimento({ route, navigation }) {
     )
   }
 
+  console.log(depoimento)
+
   return (
     <SafeAreaView style={styles.container}>
       <CardGrande
         titulo={depoimento.depoimento_titulo}
         conteudo={depoimento.depoimento_conteudo}
+        avatarUser={'https://placecats.com/300/200'}
       />
 
-      <Text style={styles.sectionTitle}>Comentários</Text>
+      <View style={styles.commentContainer}>
+        <Text style={styles.sectionTitle}>Comentários</Text>
 
-      <FlatList
-  data={comentarios}
-  keyExtractor={(item, index) => {
-    if (item && item.comentario_id != null) {
-      return item.comentario_id.toString();
-    }
-    return index.toString();
-  }}
-  contentContainerStyle={styles.commentList}
-  renderItem={({ item }) => (
-    <View style={styles.commentCard}>
-      <Text style={styles.commentText}>{item.comentario_conteudo}</Text>
-      <Text style={styles.commentDate}>
-        {new Date(item.comentario_data_criacao).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-        })}
-      </Text>
-    </View>
-  )}
-/>
+        <FlatList
+          data={comentarios}
+          keyExtractor={(item, index) => {
+            if (item && item.comentario_id != null) {
+              return item.comentario_id.toString();
+            }
+            return index.toString();
+          }}
+          contentContainerStyle={styles.commentList}
+          renderItem={({ item }) => (
+            <View style={styles.commentCard}>
+              <Text style={styles.commentText}>{item.comentario_conteudo}</Text>
+              <Text style={styles.commentDate}>
+                {new Date(item.comentario_data_criacao).toLocaleDateString('pt-BR', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                })}
+              </Text>
+            </View>
+          )}
+        />
+      </View>
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -94,7 +100,7 @@ export default function Depoimento({ route, navigation }) {
           placeholder="Digite seu comentário..."
         />
         <TouchableOpacity style={styles.button} onPress={enviarComentario}>
-          <Text style={styles.buttonText}>Enviar</Text>
+          <Feather name='send' style={styles.buttonText}></Feather>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -104,38 +110,37 @@ export default function Depoimento({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#fafafa', // tom mais claro
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontWeight: '600',
     marginHorizontal: 16,
     marginTop: 20,
-    marginBottom: 10,
-    color: '#333',
+    marginBottom: 8,
+    color: '#222',
   },
   commentList: {
     paddingHorizontal: 16,
     paddingBottom: 80,
   },
   commentCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     padding: 12,
-    marginBottom: 10,
-    borderRadius: 8,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    marginBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+    width: '100%', // sem sombra, só uma borda suave
   },
   commentText: {
-    fontSize: 16,
-    color: '#444',
+    fontSize: 15,
+    color: '#333',
     marginBottom: 4,
+    lineHeight: 20,
   },
   commentDate: {
     fontSize: 12,
-    color: 'gray',
+    color: '#888',
     textAlign: 'right',
   },
   inputContainer: {
@@ -144,29 +149,46 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: 'row',
-    padding: 10,
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     backgroundColor: '#fff',
-    borderTopColor: '#ddd',
+    borderTopColor: '#e5e5e5',
     borderTopWidth: 1,
   },
   input: {
     flex: 1,
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+    paddingVertical: 8,
+    paddingHorizontal: 5,
+    fontSize: 15,
+    backgroundColor: 'transparent',
+
   },
   button: {
+    marginLeft: 12,
     backgroundColor: '#3b82f6',
-    borderRadius: 8,
-    marginLeft: 8,
-    paddingHorizontal: 16,
-    justifyContent: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 6,
   },
   buttonText: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontWeight: '600',
+    fontSize: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 2,
+
   },
-})
+  commentContainer: {
+  flex: 1,
+  backgroundColor: '#fff',
+  marginTop: 12,
+  borderTopLeftRadius: 16,
+  borderTopRightRadius: 16,
+  overflow: 'hidden',
+},
+
+});

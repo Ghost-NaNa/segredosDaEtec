@@ -1,9 +1,9 @@
 
-export async function cadastrarUsuario(rm, email, nome, sobrenome, senha, navigation) {
+export async function cadastrarUsuario(rm, senha, email, nome, sobrenome, navigation) {
     if (rm && senha && email && sobrenome && nome) {
         try {
             const dados = { rm: parseInt(rm), senha, email, sobrenome, nome }
-            const url = 'http://localhost:3000/depoimentos-etec/v1/registrarUsuario'
+            const url = 'http://192.168.18.120:3000/depoimentos-etec/v1/registrarUsuario'
 
             const response = await fetch(url, {
                 method: 'POST',

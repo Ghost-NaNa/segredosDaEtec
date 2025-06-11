@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Alert } from 'react-native'
 
 // IP do servidor
-const ipServer = "192.168.1.16"
+const ipServer = "192.168.18.120"
 
 // Função para limpar a sessão e redirecionar
 const limparSessao = async (navigation) => {
