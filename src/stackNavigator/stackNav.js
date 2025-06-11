@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import HomeScreen from '../paginas/home/home.js'
 import Depoimento from '../paginas/depoimento/depoimento.js'
-
+import Cadastro from '../paginas/cadastro/cadastro.js';
 
 const Stack = createNativeStackNavigator();
 

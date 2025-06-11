@@ -1,56 +1,43 @@
 import { StyleSheet, Dimensions } from "react-native"
 
-const { tela } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window')
 
 const estiloDepoimentoGrande = StyleSheet.create({
   cardContainer: {
-    padding: 16,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-    height: tela * 0.5,
+    backgroundColor: '#fff',
+    margin: 16,
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+    justifyContent: 'flex-start',
   },
-  content: {
-    flex: 1,
-    marginLeft: 12,
-    justifyContent: 'space-between',
-  },
-  header: {
-    flexDirection: 'row',
+
+  titleContainer: {
+    marginBottom: 20,
     alignItems: 'center',
-    marginBottom: 6,
   },
   title: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
   },
-  dot: {
-    marginHorizontal: 6,
-    color: 'gray',
-  },
-  time: {
-    color: 'gray',
-    fontSize: 14,
+
+  textContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     fontSize: 16,
-    marginVertical: 8,
-  },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  actionText: {
-    color: 'gray',
-    marginLeft: 4,
+    color: '#444',
+    textAlign: 'center',
+    lineHeight: 22,
   },
 })
 
-export default estiloDepoimentoGrande
+export default estiloDepoimentoGrande;

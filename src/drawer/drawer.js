@@ -1,6 +1,6 @@
 import { View, Text, Image, StyleSheet } from 'react-native'
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer'
-
+import PublicacaoDepoimento from '../paginas/publicacaoDepoimento/publicacaoDepoimento.js'
 import HomeStack from '../stackNavigator/stackNav.js'
 import estiloDrawer from './estiloDrawer.js'
 import HomeScreen from '../paginas/home/home.js'
@@ -41,6 +41,7 @@ export default function DrawerNav() {
         
       <Drawer.Screen options={{ drawerActiveTintColor: 'purple' }} name="Depoimentos recentes" component={HomeScreen} />
       <Drawer.Screen name="Meu Perfil" component={MeuPerfil} />
+      <Drawer.Screen name="Publicar Depoimento" component={PublicacaoDepoimento}/>
     </Drawer.Navigator >
   )
 }

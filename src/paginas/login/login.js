@@ -1,12 +1,54 @@
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { View, TextInput, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import style from './estiloLogin.js';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Login({ navigation }) {
     const [rm, setRm] = React.useState('');
     const [senha, setSenha] = React.useState('');
+
+
+
+    async function logarUsuario(rm, senha) {
+        if (rm && senha.length > 4) {
+            try {
+                const dados = { rm: parseInt(rm), senha: senha }
+                const url = 'http://localhost:3000/depoimentos-etec/v1/login'
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados),
+                })
+
+                if (!response.ok) {
+                    throw new Error('Erro na resposta da API: ' + response.status)
+                }
+
+                const responseData = await response.json()
+                console.log('Resposta da API:', responseData)
+
+                if (responseData.msg === 'Login realizado com sucesso.') {
+
+                    await AsyncStorage.setItem('tokenSessao', responseData.token)
+
+                    navigation.navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'DrawerNav' }]
+                    })
+
+                } else {
+                    alert('Login falhou: ' + responseData.msg)
+                }
+            } catch (error) {
+                alert('Erro ao tentar entrar: ' + error.message)
+            }
+        } else {
+            alert('Por favor, preencha corretamente os campos!')
+        }
+    }
+
 
     return (
         <View style={style.container}>
@@ -48,46 +90,7 @@ export default function Login({ navigation }) {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => {
-                        if (rm && senha.length > 4) {
-                            try {
-                                const dados = { rm: parseInt(rm), senha: senha };
-                                const url = 'http://localhost:3000/depoimentos-etec/v1/login';
-
-                                fetch(url, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify(dados),
-                                })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Erro na resposta da API: ' + response.status);
-                                        }
-                                        return response.json();  // Tenta converter a resposta em JSON
-                                    })
-                                    .then(responseData => {
-                                        console.log('Resposta da API:', responseData);  // Log da resposta para debug
-                                        if (responseData.msg === 'Login realizado com sucesso.') {
-                                            navigation.navigate('Home', {
-                                                usuario: responseData.usuario,
-                                                token: responseData.token,
-                                            });
-                                        } else {
-                                            alert('Login falhou: ' + responseData.msg);
-                                        }
-                                    })
-                                    .catch(error => {
-                                        alert('Erro ao tentar entrar: ' + error.message);
-                                    });
-                            } catch (error) {
-                                alert('Erro ao tentar entrar: ' + error.message);
-                            }
-                        } else {
-                            alert('Por favor, preencha corretamente os campos!');
-                        }
-                    }}
+                    onPress={() => logarUsuario(rm, senha)}
                 >
                     <Text style={[style.Button, { backgroundColor: 'green' }]}>Entrar</Text>
                 </TouchableOpacity>

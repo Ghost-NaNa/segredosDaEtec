@@ -1,54 +1,176 @@
-//essa pasta é para funções relacionadas a posts
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Alert } from 'react-native'
 
-//Para fim de testes, o token é declarado aqui, quando o sistema de login tiver pronto é só passar o token como parametro nas functions
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJybSI6MjgzMywiZW1haWwiOiJiYWNhbmFAZ21haWwuY29tIiwibm9tZSI6ImVmYXJpbyIsInNvYnJlbm9tZSI6InZpZ2FyaW8iLCJpYXQiOjE3NDkyNjA2NDAsImV4cCI6MTc0OTI2NDI0MH0.4b5H9FinH2EXo-weXqd1LU81BVFn-WNZCE6IjSFrBpA'
+// IP do servidor
+const ipServer = "192.168.1.16"
 
-//coloquem o ip pc que roda o server aqui, só lembrem de apagar dps
+// Função para limpar a sessão e redirecionar
+const limparSessao = async (navigation) => {
+    await AsyncStorage.removeItem('tokenSessao')
+    await AsyncStorage.removeItem('usuarioSessao')
 
-const ip = "192.168.1.3"
+    if (navigation) {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }]
+        })
+    }
 
-export const pegarDepoimentos = async () => {
+    console.warn('Sessão expirada. Redirecionando para login.')
+}
+
+export const pegarDepoimentos = async (navigation) => {
+    const token = await AsyncStorage.getItem('tokenSessao')
 
     const config = {
         method: 'GET',
-        headers: {'Authorization': `Bearer ${token}`}
+        headers: { Authorization: `Bearer ${token}` }
     }
 
-    const url = `http://${ip}:3000/depoimentos-etec/v1/depoimentos`
-    try {
-        // coloque seu ip ali no link
-        const respo = await fetch(url, config)
-        const DATA = await respo.json()
+    const url = `http://${ipServer}:3000/depoimentos-etec/v1/depoimentos`
 
-        if (!respo.ok){
-            if (respo.status == 401 || respo.status == 403  ) {
-                
-            }
+    try {
+        const respo = await fetch(url, config)
+
+        if (respo.status === 401 || respo.status === 403) {
+            await limparSessao(navigation)
+            return null
         }
-        console.log(DATA)
 
-        return await DATA
+        return await respo.json()
+
     } catch (error) {
-        
-    }
-
-};
-
-//pega o post e os comentarios com base no id
-export const pegarSecaoDepoimento = async (depoimentoId) => {
-
-     const config = {
-        method: 'GET',
-        headers: {'Authorization': `Bearer ${token}`}
-    }
-    
-    const url = `http://${ip}:3000/depoimentos-etec/v1/depoimento/${depoimentoId}`
-    
-    try {
-        const respo = await fetch(url, config)
-        const DATA = await respo.json()
-        return DATA
-    } catch (error) {
-        
+        console.error('Erro ao pegar depoimentos:', error)
+        Alert.alert(
+            'Erro de conexão',
+            'Não foi possível carregar os depoimentos. Verifique sua internet ou tente mais tarde.',
+            [{ text: 'OK' }]
+        )
+        return null
     }
 }
+
+// pegarSecaoDepoimento
+export const pegarSecaoDepoimento = async (depoimentoId, navigation) => {
+    const token = await AsyncStorage.getItem('tokenSessao')
+
+    const config = {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${token}` }
+    }
+
+    const url = `http://${ipServer}:3000/depoimentos-etec/v1/depoimento/${depoimentoId}`
+
+    try {
+        const respo = await fetch(url, config)
+
+        if (respo.status === 401 || respo.status === 403) {
+            await limparSessao(navigation)
+            return null
+        }
+
+        return await respo.json()
+
+    } catch (error) {
+        console.error('Erro ao pegar depoimento:', error)
+        Alert.alert(
+            'Erro ao buscar depoimento',
+            'Não foi possível acessar este depoimento. Tente novamente em instantes.',
+            [{ text: 'OK' }]
+        )
+        return null
+    }
+}
+
+// publicarComentario
+export const publicarComentario = async (conteudoComentario, idDepoimento, navigation) => {
+    const token = await AsyncStorage.getItem('tokenSessao')
+
+    const dados = {
+        depoimentoId: idDepoimento,
+        conteudoDepoimento: conteudoComentario
+    }
+
+    const config = {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+    }
+
+    const url = `http://${ipServer}:3000/depoimentos-etec/v1/publicarComentario`
+
+    try {
+        const respo = await fetch(url, config)
+
+        if (respo.status === 401 || respo.status === 403) {
+            await limparSessao(navigation)
+            return null
+        }
+
+        return await respo.json()
+
+    } catch (error) {
+        console.error('Erro ao publicar comentário:', error)
+        Alert.alert(
+            'Erro ao comentar',
+            'Não foi possível publicar o comentário. Tente novamente.',
+            [{ text: 'OK' }]
+        )
+        return null
+    }
+}
+
+export const publicarDepoimento = async (titulo, conteudo, navigation) => {
+    // Validação antes de fazer a requisição
+    if (!titulo || !conteudo) {
+        Alert.alert(
+            "Campos obrigatórios",
+            "Por favor, preencha tanto o título quanto o conteúdo do depoimento.",
+            [{ text: "OK" }]
+        )
+        return null
+    }
+
+    const token = await AsyncStorage.getItem('tokenSessao')
+
+    const dados = {
+        titulo: titulo,
+        conteudo: conteudo
+    }
+
+    const config = {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dados)
+    }
+
+    const url = `http://${ipServer}:3000/depoimentos-etec/v1/publicarDepoimento`
+
+    try {
+        const respo = await fetch(url, config)
+
+        if (respo.status === 401 || respo.status === 403) {
+            await limparSessao(navigation)
+            return null
+        }
+
+        return await respo.json()
+
+    } catch (error) {
+        Alert.alert(
+            "Erro na requisição",
+            "Houve um problema ao tentar enviar o depoimento. Tente novamente mais tarde.",
+            [{ text: "Fechar" }]
+        )
+        console.error("Erro ao publicar depoimento:", error)
+        return null
+    }
+}
+
+
