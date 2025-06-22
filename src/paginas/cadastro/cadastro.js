@@ -1,9 +1,15 @@
 import React from 'react'
 import { cadastrarUsuario } from '../../servicos/cadastro.js'
-import { View, TextInput, Text, TouchableOpacity } from 'react-native'
+import { View, TextInput, Text, TouchableOpacity, ImageBackground, KeyboardAvoidingView, Platform } from 'react-native'
+
+import { Ionicons } from "@expo/vector-icons";
 import style from './estiloCadastro.js'
 
+
+
 export default function Cadastro({ navigation }) {
+
+    const [cod, setCodEtec] = React.useState('')
     const [rm, setRm] = React.useState('')
     const [senha, setSenha] = React.useState('')
     const [email, setEmail] = React.useState('')
@@ -11,25 +17,111 @@ export default function Cadastro({ navigation }) {
     const [sobrenome, setSobrenome] = React.useState('')
 
     return (
-        <View style={style.container}>
-            <View>
-                <Text style={style.Titulo}>Cadastro</Text>
-            </View>
-            <TextInput style={style.Inputs} placeholder='Digite o seu RM' placeholderTextColor="#fff" value={rm} onChangeText={setRm} />
-            <TextInput style={style.Inputs} placeholder='Digite o seu email' placeholderTextColor="#fff" value={email} onChangeText={setEmail} />
-            <TextInput style={style.Inputs} placeholder='Digite o seu nome' placeholderTextColor="#fff" value={nome} onChangeText={setNome} />
-            <TextInput style={style.Inputs} placeholder='Digite o seu sobrenome' placeholderTextColor="#fff" value={sobrenome} onChangeText={setSobrenome} />
-            <TextInput style={style.Inputs} placeholder='Digite sua senha' placeholderTextColor="#fff" value={senha} onChangeText={setSenha} secureTextEntry={true} />
+        <ImageBackground  
+            source={require("../../../assets/fundo.jpg")}
+            style={style.imagem}
+            resizeMode="cover"
+        >
+        
+            
+    <KeyboardAvoidingView
+        style={style.container}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+        <View style={style.card}>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 20, width: 300, flexWrap: 'wrap' }}>
-                <TouchableOpacity onPress={() => cadastrarUsuario(rm, senha, email, nome, sobrenome, navigation)}>
-                    <Text style={[style.Button, { backgroundColor: 'darkorange' }]}>Cadastrar</Text>
+                    <Text style={style.label}>Código da ETEC</Text>
+                    <View style={style.inputContainer}>
+                        <Ionicons name="business-outline" size={20} color="#fff" style={style.inputIcon} />
+                        <TextInput
+                            style={style.input}
+                            placeholder="Digite seu código da ETEC"
+                            placeholderTextColor="#ddd"
+                            value={cod}
+                            onChangeText={setCodEtec}
+                            keyboardType="numeric"
+                        />
+                    </View>
+                    
+                    <Text style={style.label}>RM</Text>
+                    <View style={style.inputContainer}>
+                        <Ionicons name="person-outline" size={20} color="#fff" style={style.inputIcon} />
+                        <TextInput
+                            style={style.input}
+                            placeholder="Digite o seu RM"
+                            placeholderTextColor="#ddd"
+                            value={rm}
+                            onChangeText={setRm}
+                            keyboardType="numeric"
+                        />
+                    </View>
+
+                    <Text style={style.label}>Email</Text>
+                    <View style={style.inputContainer}>
+                        <Ionicons name="mail" size={20} color="#fff" style={style.inputIcon} />
+                        <TextInput
+                            style={style.input}
+                            placeholder="Digite o seu Email"
+                            placeholderTextColor="#ddd"
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="text"
+                        />
+                    </View>
+                    
+                    <Text style={style.label}>Nome</Text>
+                    <View style={style.inputContainer}>
+                        <Ionicons name="person-outline" size={20} color="#fff" style={style.inputIcon} />
+                        <TextInput
+                            style={style.input}
+                            placeholder="Digite o seu Nome"
+                            placeholderTextColor="#ddd"
+                            value={nome}
+                            onChangeText={setNome}
+                            keyboardType="text"
+                        />
+                    </View>
+
+                    <Text style={style.label}>Sobrenome</Text>
+                    <View style={style.inputContainer}>
+                        <Ionicons name="person-outline" size={20} color="#fff" style={style.inputIcon} />
+                        <TextInput
+                            style={style.input}
+                            placeholder="Digite o seu sobrenome"
+                            placeholderTextColor="#ddd"
+                            value={sobrenome}
+                            onChangeText={setSobrenome}
+                            keyboardType="text"
+                        />
+                    </View>
+
+                    <Text style={style.label}>Senha</Text>
+                    <View style={style.inputContainer}>
+                        <Ionicons name="lock-closed-outline" size={20} color="#fff" style={style.inputIcon} />
+                        <TextInput
+                            style={style.input}
+                            placeholder="Digite sua senha"
+                            placeholderTextColor="#ddd"
+                            value={senha}
+                            onChangeText={setSenha}
+                            keyboardType="text"
+                            secureTextEntry
+                        />
+                    </View>
+
+
+
+                                                                                        
+                <TouchableOpacity style={style.botao} onPress={() => cadastrarUsuario(cod, rm, senha, email, nome, sobrenome, navigation)}> 
+                    <Text style={style.botaoTexto}>Cadastrar</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                    <Text style={[style.Button, { backgroundColor: 'gray', marginTop: 10 }]}>Voltar para o Login</Text>
+                <TouchableOpacity style={style.botao} onPress={() => navigation.navigate('Login')}>
+                    <Text style={style.botaoTexto}>Voltar para o Login</Text>
                 </TouchableOpacity>
-            </View>
+
         </View>
+        </KeyboardAvoidingView>    
+    </ImageBackground>
     );
 }
